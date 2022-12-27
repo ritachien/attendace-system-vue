@@ -5,8 +5,13 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      path: '/users/login',
-      name: 'user-login',
+      path: '/',
+      name: 'root',
+      redirect: '/login'
+    },
+    {
+      path: '/login',
+      name: 'login',
       component: Login
     },
     {

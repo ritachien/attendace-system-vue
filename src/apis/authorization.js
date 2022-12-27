@@ -7,4 +7,10 @@ export default {
       password,
     })
   },
+  adminLogin ({ account, password }) {
+    return apiHelper.post('/admin/login', {
+      account,
+      password,
+    })
+  },
 }
