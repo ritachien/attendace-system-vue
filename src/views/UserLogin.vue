@@ -24,7 +24,7 @@
         <label class="form-check-label" for="isAdmin">Login as Admin</label>
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">
+      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit" :disabled="isProcessing">
         Submit
       </button>
     </form>
@@ -39,6 +39,7 @@ import authorizationAPI from '../apis/authorization'
 import { Toast } from '../utils/swal'
 
 const isAdmin = ref(false)
+const isProcessing = ref(false)
 const userData = reactive({
   account: '',
   password: '',
@@ -53,6 +54,9 @@ const handleSubmit = async () => {
   }
 
   try {
+    // 請求處理未完成時 disable submit button
+    isProcessing.value = true
+
     // 針對不同身分發出不同 API 請求
     let response
     if (isAdmin.value) {
@@ -76,6 +80,7 @@ const handleSubmit = async () => {
       if (isAdmin.value) return router.push('/admin')
       return router.push('/users')
     } else {
+      isProcessing.value = false
       userData.password = ''
       Toast.fire({
         icon: 'warning',
@@ -83,6 +88,7 @@ const handleSubmit = async () => {
       })
     }
   } catch (err) {
+    isProcessing.value = false
     return Toast.fire({
       icon: 'warning',
       title: err
