@@ -1,0 +1,3 @@
+<template>
+  <h1>This is user homepage</h1>
+</template>
