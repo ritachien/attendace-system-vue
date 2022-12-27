@@ -34,6 +34,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 
+import router from '../router'
 import authorizationAPI from '../apis/authorization'
 import { Toast } from '../utils/swal'
 
@@ -67,6 +68,13 @@ const handleSubmit = async () => {
         icon: 'success',
         title: message
       })
+
+      // 將 Token 存入 localStorage    
+      localStorage.setItem('token', token)
+
+      // 依登入身分重新導入頁面
+      if (isAdmin.value) return router.push('/admin')
+      return router.push('/users')
     } else {
       userData.password = ''
       Toast.fire({
@@ -74,9 +82,6 @@ const handleSubmit = async () => {
         title: message
       })
     }
-
-    // 將 Token 存入 localStorage
-    localStorage.setItem('token', token)
   } catch (err) {
     return Toast.fire({
       icon: 'warning',
