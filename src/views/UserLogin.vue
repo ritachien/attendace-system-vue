@@ -29,18 +29,18 @@
 <script setup>
 import { ref } from 'vue'
 
+import authorizationAPI from '../apis/authorization'
+
 const account = ref('')
 const password = ref('')
 
-const handleSubmit = () => {
-  const data = JSON.stringify({
+const handleSubmit = async () => {
+  const data = {
     account: account.value,
     password: password.value
-  })
-  console.log(data)
+  }
 
-  // TODO: 向後端發送 POST 登入請求
+  const response = await authorizationAPI.userLogin(data)
+  localStorage.setItem('token', response.data.token)
 }
-
-
 </script>
