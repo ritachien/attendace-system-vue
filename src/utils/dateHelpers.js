@@ -11,6 +11,6 @@ export default {
     return dayjs().format('YYYY-MM-DD').toString()
   },
   formatTime (dateTime) {
-    return dayjs(dateTime).format('YYYY-MM-DD hh:mm:ss')
-  }
+    return dayjs(dateTime).format('YYYY-MM-DD HH:mm:ss')
+  },
 }
