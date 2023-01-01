@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <main>
-      <ClockRcord />
+      <ClockRecord />
     </main>
   </div>
 
 </template>
 
 <script setup>
-import ClockRcord from '../components/ClockRcord.vue'
+import ClockRecord from '../components/ClockRecord.vue'
 </script>
 <style>
 main {
