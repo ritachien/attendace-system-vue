@@ -12,5 +12,15 @@ export default {
     return apiHelper.get(`/users/getCurrentUser`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
+  },
+  postUserRecord ({ clockIn }) {
+    return apiHelper.post('/users/records', { clockIn }, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
+  updateUserRecord ({ recordId, clockOut }) {
+    return apiHelper.patch(`/users/records/${recordId}`, { clockOut }, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
   }
 }

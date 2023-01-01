@@ -6,7 +6,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Clock-In</h5>
-            <p class="card-text" ref="recordToday.clockIn">{{ recordToday.clockIn }}</p>
+            <p class="card-text" ref="recordToday.clockIn">{{ computedOutput.clockIn }}</p>
           </div>
         </div>
       </div>
@@ -14,21 +14,21 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Clock-Out</h5>
-            <p class="card-text">{{ recordToday.clockOut }}</p>
+            <p class="card-text">{{ computedOutput.clockOut }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="row mt-3 px-3">
-    <n-button strong secondary type="info" class="clock-button">
-      打卡
+    <n-button strong secondary type="info" class="clock-button" @click="punchClock">
+      {{ computedOutput.buttonText }}
     </n-button>
   </div>
 </template>
 <script setup>
 // import dayjs from 'dayjs'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { NButton } from 'naive-ui'
 
 import usersAPI from '../apis/users'
@@ -39,27 +39,67 @@ const userStore = useCurrentUserStore()
 
 const date = ref('YYYY-MM-DD')
 const recordToday = reactive({
-  clockIn: '還沒打卡喔!',
-  clockOut: '還沒打卡喔!'
+  clockIn: null,
+  clockOut: null,
+  recordId: null,
+  status: 0
+})
+
+const computedOutput = computed(() => {
+  const output = {
+    clockIn: recordToday.clockIn === null ? '還沒打卡喔!' : formatTime(recordToday.clockIn),
+    clockOut: recordToday.clockOut === null ? '還沒打卡喔!' : formatTime(recordToday.clockOut),
+    buttonText: recordToday.status === 0 ? '打卡!' : '可以下班囉~',
+  }
+  return output
 })
 
 function formatTime (recordTime) {
-  return recordTime === '還沒打卡喔!'
-    ? '還沒打卡喔!'
-    : dateHelpers.formatTime(recordTime)
+  return dateHelpers.formatTime(recordTime)
 }
 
 function getTodayDate () {
-  date.value = dateHelpers.getRecordDate()
+  return date.value = dateHelpers.getRecordDate()
+}
+
+function punchClock () {
+  if (recordToday.clockIn === null) {
+    return addNewRecord()
+  }
+  return updateRecord()
 }
 
 async function fetchTodayRecord () {
-  const { data } = await usersAPI.getUserRecord({
+  const { data: { records } } = await usersAPI.getUserRecord({
     userId: userStore.currentUser.id,
     dateQuery: `?date=${date.value}`,
   })
-  recordToday.clockIn = formatTime(data.records.clockIn)
-  recordToday.clockOut = formatTime(data.records.clockOut)
+
+  if (records) {
+    recordToday.recordId = records.id
+    recordToday.status = records.status
+    recordToday.clockIn = records.clockIn
+    recordToday.clockOut = records.clockOut
+  }
+  return
+}
+
+async function addNewRecord () {
+  const time = new Date()
+  const { data: { records } } = await usersAPI.postUserRecord({ clockIn: time })
+
+  recordToday.recordId = records.id
+  recordToday.clockIn = records.clockIn
+}
+
+async function updateRecord () {
+  const time = new Date()
+  const { data: { records } } = await usersAPI.updateUserRecord({
+    recordId: recordToday.recordId,
+    clockOut: time
+  })
+  recordToday.status = records.status
+  recordToday.clockOut = records.clockOut
 }
 
 onMounted(async () => {
