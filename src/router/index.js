@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Login from '../views/UserLogin.vue'
 import UserHome from '../views/UserHome.vue'
+import { useCurrentUserStore } from '../stores/currentUser'
+import { Toast } from '../utils/swal'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -31,6 +33,24 @@ const router = createRouter({
       component: () => import('../views/NotFound.vue')
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  const userStore = useCurrentUserStore()
+  const token = localStorage.getItem('token')
+  const pathWithoutToken = ['login']
+  // const pathAdminCanEnter = []
+
+  if (!token && !pathWithoutToken.includes(to.name)) {
+    Toast.fire({
+      icon: 'warning',
+      title: '您無權訪問該頁面，請先進行登入'
+    })
+    return next('login')
+  } else if (token) {
+    userStore.fetchCurrentUser()
+  }
+  next()
 })
 
 export default router
