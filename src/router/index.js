@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Login from '../views/UserLogin.vue'
 import UserHome from '../views/UserHome.vue'
 import { useCurrentUserStore } from '../stores/currentUser'
-import { Toast } from '../utils/swal'
+import { popErrMsg } from '../utils/swal'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -42,10 +42,7 @@ router.beforeEach((to, from, next) => {
   // const pathAdminCanEnter = []
 
   if (!token && !pathWithoutToken.includes(to.name)) {
-    Toast.fire({
-      icon: 'warning',
-      title: '您無權訪問該頁面，請先進行登入'
-    })
+    popErrMsg('您無權訪問該頁面，請先進行登入')
     return next('login')
   } else if (token) {
     userStore.fetchCurrentUser()

@@ -32,6 +32,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { NButton } from 'naive-ui'
 
 import usersAPI from '../apis/users'
+import { popErrMsg } from '../utils/swal'
 import dateHelpers from '../utils/dateHelpers'
 import { useCurrentUserStore } from '../stores/currentUser'
 
@@ -70,36 +71,66 @@ function punchClock () {
 }
 
 async function fetchTodayRecord () {
-  const { data: { records } } = await usersAPI.getUserRecord({
-    userId: userStore.currentUser.id,
-    dateQuery: `?date=${date.value}`,
-  })
+  try {
+    const { data: { records, status, message } } = await usersAPI.getUserRecord({
+      userId: userStore.currentUser.id,
+      dateQuery: `?date=${date.value}`,
+    })
 
-  if (records) {
-    recordToday.recordId = records.id
-    recordToday.status = records.status
-    recordToday.clockIn = records.clockIn
-    recordToday.clockOut = records.clockOut
+    if (status === 'error') {
+      return popErrMsg(message)
+    }
+
+    if (records) {
+      recordToday.recordId = records.id
+      recordToday.status = records.status
+      recordToday.clockIn = records.clockIn
+      recordToday.clockOut = records.clockOut
+    }
+    return
+  } catch (err) {
+    console.log(err)
   }
-  return
 }
 
 async function addNewRecord () {
-  const time = new Date()
-  const { data: { records } } = await usersAPI.postUserRecord({ clockIn: time })
+  try {
+    const time = new Date()
+    const { data: { records, status, message } } = await usersAPI.postUserRecord({ clockIn: time })
 
-  recordToday.recordId = records.id
-  recordToday.clockIn = records.clockIn
+    if (status === 'error') {
+      return popErrMsg(message)
+    }
+    if (records) {
+      recordToday.recordId = records.id
+      recordToday.clockIn = records.clockIn
+    }
+    return
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 async function updateRecord () {
-  const time = new Date()
-  const { data: { records } } = await usersAPI.updateUserRecord({
-    recordId: recordToday.recordId,
-    clockOut: time
-  })
-  recordToday.status = records.status
-  recordToday.clockOut = records.clockOut
+  try {
+    const time = new Date()
+    const { data: { records, status, message } } = await usersAPI.updateUserRecord({
+      recordId: recordToday.recordId,
+      clockOut: time
+    })
+
+    if (status === 'error') {
+      return popErrMsg(message)
+    }
+
+    if (records) {
+      recordToday.status = records.status
+      recordToday.clockOut = records.clockOut
+    }
+    return
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 onMounted(async () => {
