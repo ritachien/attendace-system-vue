@@ -14,6 +14,7 @@ export const useCurrentUserStore = defineStore('currentUser', () => {
   })
 
   function setCurrentUser (loginUser) {
+    isAuthenticated.value = true
     currentUser.id = loginUser.id
     currentUser.name = loginUser.name
     currentUser.account = loginUser.account
@@ -33,7 +34,7 @@ export const useCurrentUserStore = defineStore('currentUser', () => {
   async function fetchCurrentUser () {
     try {
       const { data: { user } } = await userAPI.getCurrentUser()
-      setCurrentUser(user)
+      if (user) return setCurrentUser(user)
     } catch (err) {
       console.error('can not fetch user information')
       console.log(err)
