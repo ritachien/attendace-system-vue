@@ -13,13 +13,13 @@ export const useCurrentUserStore = defineStore('currentUser', () => {
     isAdmin: false,
   })
 
-  function setCurrentUser (loginUser) {
+  function setCurrentUser (user) {
     isAuthenticated.value = true
-    currentUser.id = loginUser.id
-    currentUser.name = loginUser.name
-    currentUser.account = loginUser.account
-    currentUser.email = loginUser.email
-    currentUser.isAdmin = loginUser.isAdmin
+    currentUser.id = user.id
+    currentUser.name = user.name
+    currentUser.account = user.account
+    currentUser.email = user.email
+    currentUser.isAdmin = user.isAdmin
   }
 
   function revokeAuthentication () {
