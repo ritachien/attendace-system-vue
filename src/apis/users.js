@@ -22,5 +22,10 @@ export default {
     return apiHelper.patch(`/users/records/${recordId}`, { clockOut }, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
-  }
+  },
+  updateUser ({ userId, userData }) {
+    return apiHelper.put(`/users/${userId}`, { ...userData }, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
 }
