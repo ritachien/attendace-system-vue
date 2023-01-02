@@ -15,3 +15,10 @@ export const popErrMsg = (msg) => {
     title: msg
   })
 }
+
+export const popOkMsg = (msg) => {
+  Toast.fire({
+    icon: 'success',
+    title: msg
+  })
+}
