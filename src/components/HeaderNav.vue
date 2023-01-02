@@ -5,11 +5,18 @@
         AMS
       </span>
       <div class="icons">
-        <div class="nav-icon">
+        <router-link class="nav-icon" to="/users">
+          <n-icon>
+            <clock />
+          </n-icon>
+        </router-link>
+
+        <router-link class="nav-icon" to="/users/edit">
           <n-icon>
             <user-circle />
           </n-icon>
-        </div>
+        </router-link>
+
         <div class="nav-icon" v-if="isAuthenticated" @click="logOut()">
           <n-icon>
             <sign-out-alt />
@@ -23,7 +30,7 @@
 
 <script setup>
 import { NIcon } from 'naive-ui'
-import { UserCircle, SignOutAlt } from '@vicons/fa'
+import { UserCircle, SignOutAlt, Clock } from '@vicons/fa'
 import { storeToRefs } from 'pinia'
 
 import { useCurrentUserStore } from '../stores/currentUser'

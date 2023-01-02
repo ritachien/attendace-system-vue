@@ -8,19 +8,24 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
       path: '/admin',
       name: 'admin-home',
       component: () => import('../views/AdminHome.vue')
     },
     {
+      path: '/users/edit',
+      name: 'user-edit',
+      component: () => import('../views/UserEdit.vue')
+    },
+    {
       path: '/users',
       name: 'user-home',
       component: UserHome
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
     },
     {
       path: '/',
