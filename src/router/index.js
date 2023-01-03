@@ -1,6 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+
 import Login from '../views/UserLogin.vue'
 import UserHome from '../views/UserHome.vue'
+import UserClock from '../views/users/UserClock.vue'
+
 import { useCurrentUserStore } from '../stores/currentUser'
 import { popErrMsg } from '../utils/swal'
 
@@ -8,24 +11,50 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
       path: '/admin',
       name: 'admin-home',
-      component: () => import('../views/AdminHome.vue')
-    },
-    {
-      path: '/users/edit',
-      name: 'user-edit',
-      component: () => import('../views/UserEdit.vue')
+      component: () => import('../views/AdminHome.vue'),
+      redirect: '/admin/users',
+      children: [
+        {
+          path: 'users',
+          name: 'user-list',
+          component: () => import('../views/admin/UserList.vue')
+        },
+        {
+          path: 'newUser',
+          name: 'add-user',
+          component: () => import('../views/admin/AddUser.vue')
+        },
+        {
+          path: 'records/today',
+          name: 'record-today',
+          component: () => import('../views/admin/RecordToday.vue')
+        },
+      ]
     },
     {
       path: '/users',
       name: 'user-home',
-      component: UserHome
+      component: UserHome,
+      redirect: '/users/clock',
+      children: [
+        {
+          path: 'edit',
+          name: 'user-edit',
+          component: () => import('../views/users/UserEdit.vue')
+        },
+        {
+          path: 'clock',
+          name: 'user-clock',
+          component: UserClock,
+        }
+      ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
       path: '/',
@@ -42,17 +71,30 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const userStore = useCurrentUserStore()
+  const isAdmin = userStore.currentUser.isAdmin
+  const isAuthenticated = userStore.isAuthenticated
   const token = localStorage.getItem('token')
-  const pathWithoutToken = ['login']
-  // const pathAdminCanEnter = []
+  const pathWithoutToken = '/login'
 
-  if (!token && !pathWithoutToken.includes(to.name)) {
-    popErrMsg('您無權訪問該頁面，請先進行登入')
-    return next('login')
-  } else if (token) {
+  if (token) {
     userStore.fetchCurrentUser()
   }
-  next()
+
+  if (!token && pathWithoutToken !== to.path) {
+    // 沒有登入卻想進入設定權限的路由，直接導回登入頁面
+    popErrMsg('您無權訪問該頁面，請先進行登入')
+    return next('/login')
+  } else if (isAuthenticated && !isAdmin && ((/^\/admin/).test(to.path))) {
+    // 已登入的 user 想進入 admin 路由
+    popErrMsg('您無權訪問該頁面')
+    return next(from)
+  } else if (isAuthenticated && isAdmin && ((/^\/users/).test(to.path))) {
+    // 已登入的 admin 想進入 user 路由
+    popErrMsg('您無權訪問該頁面')
+    return next(from)
+  } else {
+    next()
+  }
 })
 
 export default router

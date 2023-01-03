@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <main>
-      <ClockRecord />
+      <router-view />
     </main>
   </div>
 
 </template>
 
 <script setup>
-import ClockRecord from '../components/ClockRecord.vue'
+import { RouterView } from 'vue-router'
 </script>
 <style>
 main {
