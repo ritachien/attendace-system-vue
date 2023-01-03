@@ -4,20 +4,20 @@
       <span class="nav-title">
         AMS
       </span>
-      <div class="icons">
-        <router-link class="nav-icon" to="/users">
+      <div class="icons" v-if="isAuthenticated">
+        <router-link class="nav-icon" to="/users" v-if="isNotAdmin">
           <n-icon>
             <clock />
           </n-icon>
         </router-link>
 
-        <router-link class="nav-icon" to="/users/edit">
+        <router-link class="nav-icon" to="/users/edit" v-if="isNotAdmin">
           <n-icon>
             <user-circle />
           </n-icon>
         </router-link>
 
-        <div class="nav-icon" v-if="isAuthenticated" @click="logOut()">
+        <div class="nav-icon" @click="logOut()">
           <n-icon>
             <sign-out-alt />
           </n-icon>
@@ -29,6 +29,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { NIcon } from 'naive-ui'
 import { UserCircle, SignOutAlt, Clock } from '@vicons/fa'
 import { storeToRefs } from 'pinia'
@@ -37,7 +38,10 @@ import { useCurrentUserStore } from '../stores/currentUser'
 import router from '../router'
 
 const userStore = useCurrentUserStore()
-const { isAuthenticated } = storeToRefs(userStore)
+const { isAuthenticated, currentUser } = storeToRefs(userStore)
+const isNotAdmin = computed(() => {
+  return !currentUser.value.isAdmin
+})
 
 function logOut () {
   localStorage.removeItem('token')
