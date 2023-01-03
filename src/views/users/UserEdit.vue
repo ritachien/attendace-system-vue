@@ -49,9 +49,9 @@
 import { reactive, computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import { useCurrentUserStore } from '../stores/currentUser'
-import { popErrMsg, popOkMsg } from '../utils/swal'
-import userAPI from '../apis/users'
+import { useCurrentUserStore } from '../../stores/currentUser'
+import { popErrMsg, popOkMsg } from '../../utils/swal'
+import userAPI from '../../apis/users'
 
 // 取得 user 修改前資料
 const userStore = useCurrentUserStore()
@@ -122,10 +122,3 @@ async function handleSubmit () {
 
 </script>
 
-
-<style scoped>
-form {
-  margin: 0 auto;
-  max-width: 600px;
-}
-</style>
