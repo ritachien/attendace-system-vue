@@ -22,3 +22,11 @@ export const popOkMsg = (msg) => {
     title: msg
   })
 }
+
+export const popConfirmMsg = ({ msg, contents, icon }) => {
+  Swal.fire({
+    title: msg,
+    html: contents,
+    icon,
+  })
+}
