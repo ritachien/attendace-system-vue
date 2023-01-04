@@ -4,20 +4,34 @@
       <span class="nav-title">
         AMS
       </span>
-      <div class="icons" v-if="isAuthenticated">
-        <router-link class="nav-icon" to="/users" v-if="isNotAdmin">
+      <div
+        class="icons"
+        v-if="isAuthenticated"
+      >
+        <router-link
+          class="nav-icon"
+          to="/user"
+          v-if="isNotAdmin"
+        >
           <n-icon>
             <clock />
           </n-icon>
         </router-link>
 
-        <router-link class="nav-icon" to="/users/edit" v-if="isNotAdmin">
+        <router-link
+          class="nav-icon"
+          to="/user/edit"
+          v-if="isNotAdmin"
+        >
           <n-icon>
             <user-circle />
           </n-icon>
         </router-link>
 
-        <div class="nav-icon" @click="logOut()">
+        <div
+          class="nav-icon"
+          @click="logOut()"
+        >
           <n-icon>
             <sign-out-alt />
           </n-icon>

@@ -1,6 +1,9 @@
 <template>
   <div class="container py-5">
-    <form class="w-100" @submit.prevent.stop="handleSubmit">
+    <form
+      class="w-100"
+      @submit.prevent.stop="handleSubmit"
+    >
       <div class="text-center my-4">
         <h1 class="h3 mb-4 font-weight-normal">
           個人資料編輯
@@ -9,36 +12,76 @@
 
       <div class="form-label-group my-4">
         <label for="account">Account</label>
-        <input id="account" v-model.trim="userData.account" name="account" type="text" class="form-control"
-          :placeholder="currentUser.account" autofocus>
+        <input
+          id="account"
+          v-model.trim="userData.account"
+          name="account"
+          type="text"
+          class="form-control"
+          :placeholder="currentUser.account"
+          autofocus
+        >
       </div>
 
       <div class="form-label-group my-4">
         <label for="name">Name</label>
-        <input id="name" v-model.trim="userData.name" :placeholder="currentUser.name" name="name" type="text"
-          class="form-control" disabled autofocus>
+        <input
+          id="name"
+          v-model.trim="userData.name"
+          :placeholder="currentUser.name"
+          name="name"
+          type="text"
+          class="form-control"
+          disabled
+          autofocus
+        >
       </div>
 
       <div class="form-label-group my-4">
         <label for="email">Email</label>
-        <input id="email" v-model.trim="userData.email" :placeholder="currentUser.email" name="email" type="email"
-          class="form-control" autofocus>
+        <input
+          id="email"
+          v-model.trim="userData.email"
+          :placeholder="currentUser.email"
+          name="email"
+          type="email"
+          class="form-control"
+          autofocus
+        >
       </div>
 
       <div class="form-label-group my-4">
         <label for="password">Password</label>
-        <input id="password" v-model.trim="userData.password" name="password" type="password" class="form-control"
-          placeholder="Enter password if you want to reset" autofocus>
+        <input
+          id="password"
+          v-model.trim="userData.password"
+          name="password"
+          type="password"
+          class="form-control"
+          placeholder="Enter password if you want to reset"
+          autofocus
+        >
       </div>
 
       <div class="form-label-group my-4">
         <label for="passwordCheck">Password Check</label>
-        <input id="passwordCheck" v-model.trim="userData.passwordCheck" name="passwordCheck" type="password"
-          class="form-control" placeholder="Enter same password as above" :required="Boolean(userData.password)"
-          autofocus>
+        <input
+          id="passwordCheck"
+          v-model.trim="userData.passwordCheck"
+          name="passwordCheck"
+          type="password"
+          class="form-control"
+          placeholder="Enter same password as above"
+          :required="Boolean(userData.password)"
+          autofocus
+        >
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit" :disabled="nothingUpdate || isProcessing">
+      <button
+        class="btn btn-lg btn-primary btn-block mb-3"
+        type="submit"
+        :disabled="nothingUpdate || isProcessing"
+      >
         Submit
       </button>
     </form>
@@ -104,7 +147,7 @@ async function handleSubmit () {
     }
 
     // 發出 API 請求
-    const { data: { status, message, user } } = await userAPI.updateUser({ userId: currentUser.value.id, userData })
+    const { data: { status, message, user } } = await userAPI.updateUser(userData)
 
     if (status === 'error') {
       isProcessing.value = false
@@ -112,11 +155,20 @@ async function handleSubmit () {
     }
 
     userStore.setCurrentUser(user)
+    resetForm()
     isProcessing.value = false
     return popOkMsg('修改成功!')
   } catch (err) {
     isProcessing.value = false
     return popErrMsg(err)
+  }
+
+  // 重設表單
+  function resetForm () {
+    userData.account = ''
+    userData.email = ''
+    userData.password = ''
+    userData.passwordCheck = ''
   }
 }
 

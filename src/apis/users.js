@@ -3,28 +3,28 @@ import { apiHelper } from "../utils/apiHelper"
 const getToken = () => localStorage.getItem('token')
 
 export default {
-  getUserRecord ({ userId, dateQuery }) {
-    return apiHelper.get(`/users/${userId}/records${dateQuery}`, {
+  getUserRecord ({ dateQuery }) {
+    return apiHelper.get(`/user/records${dateQuery}`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
   getCurrentUser () {
-    return apiHelper.get(`/users/getCurrentUser`, {
+    return apiHelper.get(`/user/getCurrentUser`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
   postUserRecord ({ clockIn }) {
-    return apiHelper.post('/users/records', { clockIn }, {
+    return apiHelper.post('/user/records', { clockIn }, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
   updateUserRecord ({ recordId, clockOut }) {
-    return apiHelper.patch(`/users/records/${recordId}`, { clockOut }, {
+    return apiHelper.patch(`/user/records/${recordId}`, { clockOut }, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  updateUser ({ userId, userData }) {
-    return apiHelper.put(`/users/${userId}`, { ...userData }, {
+  updateUser (userData) {
+    return apiHelper.put('/user', userData, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },

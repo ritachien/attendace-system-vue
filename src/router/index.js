@@ -34,10 +34,10 @@ const router = createRouter({
       ]
     },
     {
-      path: '/users',
+      path: '/user',
       name: 'user-home',
       component: UserHome,
-      redirect: '/users/clock',
+      redirect: '/user/clock',
       children: [
         {
           path: 'edit',
@@ -88,7 +88,7 @@ router.beforeEach((to, from, next) => {
     // 已登入的 user 想進入 admin 路由
     popErrMsg('您無權訪問該頁面')
     return next(from)
-  } else if (isAuthenticated && isAdmin && ((/^\/users/).test(to.path))) {
+  } else if (isAuthenticated && isAdmin && ((/^\/user/).test(to.path))) {
     // 已登入的 admin 想進入 user 路由
     popErrMsg('您無權訪問該頁面')
     return next(from)
