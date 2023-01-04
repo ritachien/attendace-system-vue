@@ -1,6 +1,9 @@
 <template>
   <div class="container py-5">
-    <form class="w-100" @submit.prevent.stop="handleSubmit">
+    <form
+      class="w-100"
+      @submit.prevent.stop="handleSubmit"
+    >
       <div class="text-center my-4">
         <h1 class="h3 mb-4 font-weight-normal">
           Login
@@ -9,22 +12,50 @@
 
       <div class="form-label-group my-4">
         <label for="account">Account</label>
-        <input id="account" v-model.trim="userData.account" name="account" type="text" class="form-control"
-          placeholder="Enter account here..." required autofocus>
+        <input
+          id="account"
+          v-model.trim="userData.account"
+          name="account"
+          type="text"
+          class="form-control"
+          placeholder="Enter account here..."
+          required
+          autofocus
+        >
       </div>
 
       <div class="form-label-group my-4">
         <label for="password">Password</label>
-        <input id="password" v-model.trim="userData.password" name="password" type="password" class="form-control"
-          placeholder="Enter password here..." autocomplete="current-password" required>
+        <input
+          id="password"
+          v-model.trim="userData.password"
+          name="password"
+          type="password"
+          class="form-control"
+          placeholder="Enter password here..."
+          autocomplete="current-password"
+          required
+        >
       </div>
 
       <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="isAdmin" v-model="isAdmin">
-        <label class="form-check-label" for="isAdmin">Login as Admin</label>
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="isAdmin"
+          v-model="isAdmin"
+        >
+        <label
+          class="form-check-label"
+          for="isAdmin"
+        >Login as Admin</label>
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit" :disabled="isProcessing">
+      <button
+        class="btn btn-lg btn-primary btn-block mb-3"
+        type="submit"
+        :disabled="isProcessing"
+      >
         Submit
       </button>
     </form>
@@ -85,7 +116,7 @@ const handleSubmit = async () => {
 
       // 依登入身分重新導入頁面
       if (isAdmin.value) return router.push('/admin')
-      return router.push('/users')
+      return router.push('/user')
     } else {
       isProcessing.value = false
       userData.password = ''

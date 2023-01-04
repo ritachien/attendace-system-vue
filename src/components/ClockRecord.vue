@@ -6,7 +6,10 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Clock-In</h5>
-            <p class="card-text" ref="recordToday.clockIn">{{ computedOutput.clockIn }}</p>
+            <p
+              class="card-text"
+              ref="recordToday.clockIn"
+            >{{ computedOutput.clockIn }}</p>
           </div>
         </div>
       </div>
@@ -21,7 +24,13 @@
     </div>
   </div>
   <div class="row mt-3 px-3">
-    <n-button strong secondary type="info" class="clock-button" @click="punchClock">
+    <n-button
+      strong
+      secondary
+      type="info"
+      class="clock-button"
+      @click="punchClock"
+    >
       {{ computedOutput.buttonText }}
     </n-button>
   </div>
@@ -34,9 +43,6 @@ import { NButton } from 'naive-ui'
 import usersAPI from '../apis/users'
 import { popErrMsg } from '../utils/swal'
 import dateHelpers from '../utils/dateHelpers'
-import { useCurrentUserStore } from '../stores/currentUser'
-
-const userStore = useCurrentUserStore()
 
 const date = ref('YYYY-MM-DD')
 const recordToday = reactive({
@@ -73,7 +79,6 @@ function punchClock () {
 async function fetchTodayRecord () {
   try {
     const { data: { records, status, message } } = await usersAPI.getUserRecord({
-      userId: userStore.currentUser.id,
       dateQuery: `?date=${date.value}`,
     })
 
