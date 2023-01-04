@@ -9,7 +9,7 @@ export default {
     })
   },
   getCurrentUser () {
-    return apiHelper.get(`/user/getCurrentUser`, {
+    return apiHelper.get(`/users/getCurrentUser`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
