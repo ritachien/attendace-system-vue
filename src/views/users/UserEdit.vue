@@ -76,14 +76,19 @@
           autofocus
         >
       </div>
+      <div class="row mt-4 px-2">
+        <n-button
+          strong
+          secondary
+          type="info"
+          class="clock-button"
+          :disabled="nothingUpdate || isProcessing"
+          @click="handleSubmit"
+        >
+          Save
+        </n-button>
+      </div>
 
-      <button
-        class="btn btn-lg btn-primary btn-block mb-3"
-        type="submit"
-        :disabled="nothingUpdate || isProcessing"
-      >
-        Submit
-      </button>
     </form>
   </div>
 </template>
@@ -91,6 +96,7 @@
 <script setup>
 import { reactive, computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { NButton } from 'naive-ui'
 
 import { useCurrentUserStore } from '../../stores/currentUser'
 import { popErrMsg, popOkMsg } from '../../utils/swal'
@@ -122,7 +128,7 @@ async function handleSubmit () {
     isProcessing.value = true
 
     // 檢查 user Input
-    const accountReg = /^\w{6,12}$/
+    const accountReg = /^\w{5,12}$/
     const emailReg = /^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$/
     const passwordReg = /^[\w!@#$%^&*]{6,20}$/
 

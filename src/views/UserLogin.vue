@@ -38,7 +38,7 @@
         >
       </div>
 
-      <div class="mb-3 form-check">
+      <div class="mb-4 form-check">
         <input
           type="checkbox"
           class="form-check-input"
@@ -50,20 +50,25 @@
           for="isAdmin"
         >Login as Admin</label>
       </div>
-
-      <button
-        class="btn btn-lg btn-primary btn-block mb-3"
-        type="submit"
-        :disabled="isProcessing"
-      >
-        Submit
-      </button>
+      <div class="row mt-4 px-2">
+        <n-button
+          strong
+          secondary
+          type="info"
+          class="clock-button"
+          :disabled="isProcessing"
+          @click="handleSubmit"
+        >
+          Login
+        </n-button>
+      </div>
     </form>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue'
+import { NButton } from 'naive-ui'
 
 import router from '../router'
 import authorizationAPI from '../apis/authorization'
