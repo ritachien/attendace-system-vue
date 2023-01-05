@@ -58,7 +58,8 @@ let isAllowedTOClock = false
 // 用 Google geolocate API 取得目前經緯度
 async function getPosition () {
   try {
-    const { data } = await axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`, {})
+    const API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY
+    const { data } = await axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`, {})
     currentPosition.lat = data.location.lat
     currentPosition.lng = data.location.lng
     calculateDistance()
@@ -72,7 +73,6 @@ function calculateDistance () {
   const allowedDistance = 400  // 公尺
   for (const place of placesAllowToClock) {
     const distance = distanceTo(currentPosition, place)
-    console.log(distance)
     if (distance <= allowedDistance) {
       return isAllowedTOClock = true
     }
