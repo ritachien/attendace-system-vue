@@ -58,6 +58,7 @@
           class="clock-button"
           :disabled="isProcessing"
           @click="handleSubmit"
+          attr-type="submit"
         >
           Login
         </n-button>

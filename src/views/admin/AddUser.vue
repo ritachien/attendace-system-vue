@@ -1,6 +1,9 @@
 <template>
   <div class="container py-5">
-    <form class="w-100" @submit.prevent.stop="handleSubmit">
+    <form
+      class="w-100"
+      @submit.prevent.stop="handleSubmit"
+    >
       <div class="text-center my-4">
         <h1 class="h3 mb-4 font-weight-normal">
           新增使用者
@@ -9,30 +12,67 @@
 
       <div class="form-label-group my-4">
         <label for="account">Account</label>
-        <input id="account" v-model.trim="userData.account" name="account" type="text" class="form-control"
-          placeholder="使用者帳號" required autofocus>
+        <input
+          id="account"
+          v-model.trim="userData.account"
+          name="account"
+          type="text"
+          class="form-control"
+          placeholder="使用者帳號"
+          required
+          autofocus
+        >
       </div>
 
       <div class="form-label-group my-4">
         <label for="name">Name</label>
-        <input id="name" v-model.trim="userData.name" placeholder="使用者姓名" name="name" type="text" class="form-control"
-          required autofocus>
+        <input
+          id="name"
+          v-model.trim="userData.name"
+          placeholder="使用者姓名"
+          name="name"
+          type="text"
+          class="form-control"
+          required
+          autofocus
+        >
       </div>
 
       <div class="form-label-group my-4">
         <label for="email">Email</label>
-        <input id="email" v-model.trim="userData.email" placeholder="使用者 email" name="email" type="email"
-          class="form-control" autofocus>
+        <input
+          id="email"
+          v-model.trim="userData.email"
+          placeholder="使用者 email"
+          name="email"
+          type="email"
+          class="form-control"
+          autofocus
+        >
       </div>
 
       <div class="form-label-group my-4">
         <label for="password">Password</label>
-        <input id="password" name="password" type="text" class="form-control" placeholder="預設密碼: titaner" disabled>
+        <input
+          id="password"
+          name="password"
+          type="text"
+          class="form-control"
+          placeholder="預設密碼: titaner"
+          disabled
+        >
       </div>
 
       <div class="row mt-5 px-3">
-        <n-button strong secondary type="info" class="clock-button" @click="handleSubmit"
-          :disabled="isNotReadyForSubmit || isProcessing">
+        <n-button
+          strong
+          secondary
+          type="info"
+          class="clock-button"
+          @click="handleSubmit"
+          attr-type="submit"
+          :disabled="isNotReadyForSubmit || isProcessing"
+        >
           Submit
         </n-button>
       </div>
