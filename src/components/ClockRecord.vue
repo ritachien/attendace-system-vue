@@ -23,26 +23,49 @@
       </div>
     </div>
   </div>
-  <div class="row mt-3 px-3">
+
+  <div class="row mt-3 ms-1 ps-2">
     <n-button
+      v-if="isAllowed"
       strong
       secondary
       type="info"
       class="clock-button"
       @click="punchClock"
     >
-      {{ computedOutput.buttonText }}
+      {{ computedOutput.clockButtonText }}
+    </n-button>
+
+    <n-button
+      v-else
+      strong
+      secondary
+      type="info"
+      class="clock-button"
+      @click="props.getPosition"
+    >
+      {{ computedOutput.locateButtonText }}
     </n-button>
   </div>
 </template>
 <script setup>
-// import dayjs from 'dayjs'
 import { ref, reactive, computed, onMounted } from 'vue'
 import { NButton } from 'naive-ui'
 
 import usersAPI from '../apis/users'
 import { popErrMsg } from '../utils/swal'
 import dateHelpers from '../utils/dateHelpers'
+
+const props = defineProps({
+  getPosition: {
+    type: Function,
+    default: () => ({})
+  },
+  isAllowed: {
+    type: Boolean,
+    default: false,
+  }
+})
 
 const date = ref('YYYY-MM-DD')
 const recordToday = reactive({
@@ -56,7 +79,8 @@ const computedOutput = computed(() => {
   const output = {
     clockIn: recordToday.clockIn === null ? '還沒打卡喔!' : formatTime(recordToday.clockIn),
     clockOut: recordToday.clockOut === null ? '還沒打卡喔!' : formatTime(recordToday.clockOut),
-    buttonText: recordToday.status === 0 ? '打卡!' : '可以下班囉~',
+    clockButtonText: recordToday.status === 0 ? '打卡!' : '打卡! (可以下班囉~)',
+    locateButtonText: recordToday.status === 0 ? '重新取得定位!' : '重新取得定位! (可以下班囉~)',
   }
   return output
 })
@@ -100,8 +124,7 @@ async function fetchTodayRecord () {
 
 async function addNewRecord () {
   try {
-    const time = new Date()
-    const { data: { records, status, message } } = await usersAPI.postUserRecord({ clockIn: time })
+    const { data: { records, status, message } } = await usersAPI.postUserRecord()
 
     if (status === 'error') {
       return popErrMsg(message)
@@ -118,11 +141,11 @@ async function addNewRecord () {
 
 async function updateRecord () {
   try {
-    const time = new Date()
     const { data: { records, status, message } } = await usersAPI.updateUserRecord({
       recordId: recordToday.recordId,
-      clockOut: time
     })
+
+    date.value = getTodayDate()
 
     if (status === 'error') {
       return popErrMsg(message)
