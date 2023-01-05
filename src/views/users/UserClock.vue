@@ -59,6 +59,8 @@ let isAllowedTOClock = false
 async function getPosition () {
   try {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY
+    console.log(import.meta.env)
+    console.log(API_KEY)
     const { data } = await axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`, {})
     currentPosition.lat = data.location.lat
     currentPosition.lng = data.location.lng
