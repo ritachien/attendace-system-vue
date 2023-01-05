@@ -1,12 +1,25 @@
 <template>
 
-  <n-layout has-sider class="admin-main">
+  <n-layout
+    has-sider
+    class="admin-main"
+  >
     <!-- 左邊選單 -->
-    <n-layout-sider bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="240"
-      :native-scrollbar="false">
+    <n-layout-sider
+      bordered
+      show-trigger
+      collapse-mode="width"
+      :collapsed-width="64"
+      :width="240"
+      :native-scrollbar="false"
+    >
 
-      <n-menu :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions"
-        :default-expanded-keys="defaultExpandedKeys" />
+      <n-menu
+        :collapsed-width="64"
+        :collapsed-icon-size="22"
+        :options="menuOptions"
+        :default-expanded-keys="defaultExpandedKeys"
+      />
 
     </n-layout-sider>
     <!-- 右邊內容 -->
@@ -69,7 +82,7 @@ const menuOptions = [
   },
   {
     label: "出勤管理",
-    key: "attendace-management",
+    key: "attendance-management",
     type: 'group',
     // icon: renderIcon(BookIcon),
     disabled: true,

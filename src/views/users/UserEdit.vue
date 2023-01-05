@@ -84,6 +84,7 @@
           class="clock-button"
           :disabled="nothingUpdate || isProcessing"
           @click="handleSubmit"
+          attr-type="submit"
         >
           Save
         </n-button>
