@@ -20,7 +20,6 @@
 
 <script setup>
 import axios from 'axios'
-import dotenv from 'dotenv'
 import { ref } from 'vue'
 import { distanceTo } from 'geolocation-utils'
 
