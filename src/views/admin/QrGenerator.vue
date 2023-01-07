@@ -10,22 +10,14 @@
   </main>
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import QrcodeVue from 'qrcode.vue'
-import { CronJob } from 'cron'
 
 import adminAPI from '../../apis/admin.js'
 import { popErrMsg } from '../../utils/swal'
 
 const qrValue = ref('hr://random_string')
 const size = ref(300)
-const renewQrCode = new CronJob(
-  '10 * * * * *',  // 固定執行時間
-  getQrString(),  // 要做的事
-  null,  // 完成之後要做的事
-  false,  // 自動開始 cron
-  'Asia/Taipei'  // 時區
-)
 
 async function getQrString () {
   try {
@@ -37,13 +29,13 @@ async function getQrString () {
   }
 }
 
-onMounted(() => {
-  renewQrCode.start()
-  getQrString()
-})
+let renewQrCode
 
-onUnmounted(() => {
-  renewQrCode.stop()
+onMounted(() => {
+  renewQrCode = setInterval(() => getQrString(), 1800000) // 30 分鐘
+})
+onBeforeUnmount(() => {
+  clearInterval(renewQrCode)
 })
 </script>
 
