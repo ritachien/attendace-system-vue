@@ -34,7 +34,6 @@
           type="text"
           class="form-control"
           required
-          autofocus
         >
       </div>
 
@@ -47,7 +46,6 @@
           name="email"
           type="email"
           class="form-control"
-          autofocus
         >
       </div>
 

@@ -33,7 +33,6 @@
           type="text"
           class="form-control"
           disabled
-          autofocus
         >
       </div>
 
@@ -46,7 +45,6 @@
           name="email"
           type="email"
           class="form-control"
-          autofocus
         >
       </div>
 
@@ -59,7 +57,6 @@
           type="password"
           class="form-control"
           placeholder="Enter password if you want to reset"
-          autofocus
         >
       </div>
 
@@ -73,7 +70,6 @@
           class="form-control"
           placeholder="Enter same password as above"
           :required="Boolean(userData.password)"
-          autofocus
         >
       </div>
       <div class="row mt-4 px-2">

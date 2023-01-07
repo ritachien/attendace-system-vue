@@ -59,7 +59,7 @@ const menuOptions = [
               name: 'user-list',
             }
           }, {
-          default: () => '員工列表'
+          default: () => '員工帳號管理'
         }),
         key: 'user-list',
         icon: renderIcon(Users),
@@ -83,17 +83,12 @@ const menuOptions = [
   {
     label: "出勤管理",
     key: "attendance-management",
-    type: 'group',
-    // icon: renderIcon(BookIcon),
+    icon: renderIcon(UsersCog),
     disabled: true,
     children: [
-      {
-        label: "Rat",
-        key: "rat"
-      },
-    ]
+    ],
   },
-];
+]
 
 </script>
 
