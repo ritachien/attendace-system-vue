@@ -3,6 +3,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Login from '../views/UserLogin.vue'
 import UserHome from '../views/UserHome.vue'
 import UserClock from '../views/users/UserClock.vue'
+import GpsClock from '../views/users/GpsClock.vue'
+import QrGenerator from '../views/admin/QrGenerator.vue'
 
 import { useCurrentUserStore } from '../stores/currentUser'
 import { popErrMsg } from '../utils/swal'
@@ -16,6 +18,11 @@ const router = createRouter({
       component: () => import('../views/AdminHome.vue'),
       redirect: '/admin/users',
       children: [
+        {
+          path: 'qr',
+          name: 'qr-generator',
+          component: QrGenerator,
+        },
         {
           path: 'users',
           name: 'user-list',
@@ -48,6 +55,19 @@ const router = createRouter({
           path: 'clock',
           name: 'user-clock',
           component: UserClock,
+          redirect: '/user/clock/gps',
+          children: [
+            {
+              path: 'gps',
+              name: 'gps-clock',
+              component: GpsClock
+            },
+            {
+              path: 'qr',
+              name: 'qr-clock',
+              component: () => import('../views/users/QrClock.vue')
+            },
+          ]
         }
       ]
     },
