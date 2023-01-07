@@ -13,4 +13,17 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
+  getUsers () {
+    return apiHelper.get('/admin/users', {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
+  editUser ({ userId, resetPassword, unlock }) {
+    return apiHelper.put(`/admin/users/${userId}`, {
+      resetPassword,
+      unlock,
+    }, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  }
 }

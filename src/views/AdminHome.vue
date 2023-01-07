@@ -59,7 +59,7 @@ const menuOptions = [
               name: 'user-list',
             }
           }, {
-          default: () => '員工列表'
+          default: () => '員工帳號管理'
         }),
         key: 'user-list',
         icon: renderIcon(Users),
@@ -93,7 +93,7 @@ const menuOptions = [
       },
     ]
   },
-];
+]
 
 </script>
 
