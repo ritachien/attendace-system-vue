@@ -9,10 +9,7 @@
   </div>
 
   <div class="row">
-    <QrReader
-      :qrString="qrString"
-      @updateQrString="punchQrClock"
-    />
+    <QrReader @updateQrString="punchQrClock" />
   </div>
 
 </template>
