@@ -13,13 +13,19 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  postUserRecord () {
-    return apiHelper.post('/user/records', {}, {
+  postUserRecord ({ position, qrString }) {
+    return apiHelper.post('/user/records', {
+      position,
+      qrString
+    }, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  updateUserRecord ({ recordId }) {
-    return apiHelper.patch(`/user/records/${recordId}`, {}, {
+  updateUserRecord ({ recordId, position, qrString }) {
+    return apiHelper.patch(`/user/records/${recordId}`, {
+      position,
+      qrString
+    }, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
