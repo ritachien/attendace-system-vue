@@ -15,8 +15,10 @@
     "dayjs": "^1.11.7",
     "geolocation-utils": "^1.2.5",
     "pinia": "^2.0.28",
+    "qrcode.vue": "^3.3.3",
     "sweetalert2": "^11.6.16",
     "vue": "^3.2.45",
+    "vue-qrcode-reader": "3.1.0-vue3-compatibility.2",
     "vue-router": "^4.1.6",
     "vue3-google-map": "^0.15.0"
   },

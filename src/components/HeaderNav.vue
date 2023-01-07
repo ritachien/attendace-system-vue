@@ -10,7 +10,16 @@
       >
         <router-link
           class="nav-icon"
-          to="/user"
+          :to="qrURL"
+        >
+          <n-icon>
+            <Qrcode />
+          </n-icon>
+        </router-link>
+
+        <router-link
+          class="nav-icon"
+          to="/user/clock/gps"
           v-if="isNotAdmin"
         >
           <n-icon>
@@ -45,7 +54,7 @@
 <script setup>
 import { computed } from 'vue'
 import { NIcon } from 'naive-ui'
-import { UserCircle, SignOutAlt, Clock } from '@vicons/fa'
+import { UserCircle, SignOutAlt, Clock, Qrcode } from '@vicons/fa'
 import { storeToRefs } from 'pinia'
 
 import { useCurrentUserStore } from '../stores/currentUser'
@@ -55,6 +64,9 @@ const userStore = useCurrentUserStore()
 const { isAuthenticated, currentUser } = storeToRefs(userStore)
 const isNotAdmin = computed(() => {
   return !currentUser.value.isAdmin
+})
+const qrURL = computed(() => {
+  return currentUser.value.isAdmin ? '/admin/qr' : '/user/clock/qr'
 })
 
 function logOut () {

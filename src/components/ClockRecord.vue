@@ -1,5 +1,5 @@
 <template>
-  <h3 class="mt-5">打卡日期: {{ date }}</h3>
+  <h3 class="mt-5">打卡日期: {{ props.date }}</h3>
   <div id="clock-record">
     <div class="row">
       <div class="col-sm-6 mb-3 mb-sm-0">
@@ -24,14 +24,17 @@
     </div>
   </div>
 
-  <div class="row mt-3 ms-1 ps-2">
+  <div
+    class="row mt-3 ms-1 ps-2"
+    v-if="props.isGpsRoute"
+  >
     <n-button
       v-if="isAllowed"
       strong
       secondary
       type="info"
       class="clock-button"
-      @click="punchClock"
+      @click="props.punchClock"
     >
       {{ computedOutput.clockButtonText }}
     </n-button>
@@ -49,38 +52,61 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { NButton } from 'naive-ui'
 
-import usersAPI from '../apis/users'
-import { popErrMsg } from '../utils/swal'
 import dateHelpers from '../utils/dateHelpers'
 
 const props = defineProps({
+  date: {
+    type: String,
+    default: 'YYYY-MM-DD'
+  },
+  recordToday: {
+    type: Object,
+    default: () => ({
+      clockIn: {
+        type: String,
+        default: null,
+      },
+      clockOut: {
+        type: String,
+        default: null,
+      },
+      recordId: {
+        type: Number,
+        default: null,
+      },
+      status: {
+        type: Number,
+        default: 0,
+      },
+    })
+  },
   getPosition: {
     type: Function,
-    default: () => ({})
+    default: () => {}
+  },
+  punchClock: {
+    type: Function,
+    default: () => {}
   },
   isAllowed: {
     type: Boolean,
     default: false,
+  },
+  isGpsRoute: {
+    type: Boolean,
+    default: true,
   }
-})
-
-const date = ref('YYYY-MM-DD')
-const recordToday = reactive({
-  clockIn: null,
-  clockOut: null,
-  recordId: null,
-  status: 0
 })
 
 const computedOutput = computed(() => {
   const output = {
-    clockIn: recordToday.clockIn === null ? '還沒打卡喔!' : formatTime(recordToday.clockIn),
-    clockOut: recordToday.clockOut === null ? '還沒打卡喔!' : formatTime(recordToday.clockOut),
-    clockButtonText: recordToday.status === 0 ? '打卡!' : '打卡! (可以下班囉~)',
-    locateButtonText: recordToday.status === 0 ? '重新取得定位!' : '重新取得定位! (可以下班囉~)',
+    clockIn: props.recordToday.clockIn === null ? '還沒打卡喔!' : formatTime(props.recordToday.clockIn),
+    clockOut: props.recordToday.clockOut === null ? '還沒打卡喔!' : formatTime(props.recordToday.clockOut),
+    clockButtonText: props.recordToday.status === 0 ? '打卡!' : '打卡! (可以下班囉~)',
+    locateButtonText: props.recordToday.status === 0 ? '重新取得定位!' : '重新取得定位! (可以下班囉~)',
   }
   return output
 })
@@ -88,86 +114,6 @@ const computedOutput = computed(() => {
 function formatTime (recordTime) {
   return dateHelpers.formatTime(recordTime)
 }
-
-function getTodayDate () {
-  return date.value = dateHelpers.getRecordDate()
-}
-
-function punchClock () {
-  if (recordToday.clockIn === null) {
-    return addNewRecord()
-  }
-  return updateRecord()
-}
-
-async function fetchTodayRecord () {
-  try {
-    const { data: { records, status, message } } = await usersAPI.getUserRecord({
-      dateQuery: `?date=${date.value}`,
-    })
-
-    if (status === 'error') {
-      return popErrMsg(message)
-    }
-
-    if (records) {
-      recordToday.recordId = records.id
-      recordToday.status = records.status
-      recordToday.clockIn = records.clockIn
-      recordToday.clockOut = records.clockOut
-    }
-    return
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-async function addNewRecord () {
-  try {
-    const { data: { records, status, message } } = await usersAPI.postUserRecord()
-
-    if (status === 'error') {
-      return popErrMsg(message)
-    }
-    if (records) {
-      recordToday.recordId = records.id
-      recordToday.clockIn = records.clockIn
-    }
-    return
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-async function updateRecord () {
-  try {
-    const { data: { records, status, message } } = await usersAPI.updateUserRecord({
-      recordId: recordToday.recordId,
-    })
-
-    date.value = getTodayDate()
-
-    if (status === 'error') {
-      return popErrMsg(message)
-    }
-
-    if (records) {
-      recordToday.status = records.status
-      recordToday.clockOut = records.clockOut
-    }
-    return
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-onMounted(async () => {
-  getTodayDate()
-  fetchTodayRecord()
-})
-
-
-
 </script>
 <style>
 .clock-button {
