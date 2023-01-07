@@ -83,15 +83,10 @@ const menuOptions = [
   {
     label: "出勤管理",
     key: "attendance-management",
-    type: 'group',
-    // icon: renderIcon(BookIcon),
+    icon: renderIcon(UsersCog),
     disabled: true,
     children: [
-      {
-        label: "Rat",
-        key: "rat"
-      },
-    ]
+    ],
   },
 ]
 
