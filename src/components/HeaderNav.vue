@@ -1,9 +1,12 @@
 <template>
   <header>
     <nav>
-      <span class="nav-title">
+      <router-link
+        :to="isNotAdmin ? '/user/clock/gps' : '/admin/users'"
+        class="nav-title"
+      >
         AMS
-      </span>
+      </router-link>
       <div
         class="icons"
         v-if="isAuthenticated"
@@ -23,7 +26,7 @@
           v-if="isNotAdmin"
         >
           <n-icon>
-            <clock />
+            <SearchLocation />
           </n-icon>
         </router-link>
 
@@ -54,7 +57,7 @@
 <script setup>
 import { computed } from 'vue'
 import { NIcon } from 'naive-ui'
-import { UserCircle, SignOutAlt, Clock, Qrcode } from '@vicons/fa'
+import { UserCircle, SignOutAlt, SearchLocation, Qrcode } from '@vicons/fa'
 import { storeToRefs } from 'pinia'
 
 import { useCurrentUserStore } from '../stores/currentUser'
@@ -113,5 +116,6 @@ n-icon {
   font-weight: bold;
   letter-spacing: 2px;
   font-size: 30px;
+  text-decoration: none;
 }
 </style>
