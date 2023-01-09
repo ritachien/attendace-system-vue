@@ -22,20 +22,20 @@ const emit = defineEmits(['updateQrString'])
 const cameraActive = ref('auto')
 
 function onDecode (decodedString) {
-  pauseSacn()
+  pauseScan()
   const reg = /^hr:\/\/(?<string>[-\w]{36})$/
   const { string } = decodedString.match(reg).groups
   popOkMsg('掃描成功!')
   emit('updateQrString', string)
   return setTimeout(() => {
-    startSacn()
+    startScan()
   }, 500)
 }
 
-function pauseSacn () {
+function pauseScan () {
   cameraActive.value = 'off'
 }
-function startSacn () {
+function startScan () {
   cameraActive.value = 'auto'
 }
 
