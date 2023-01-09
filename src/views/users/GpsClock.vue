@@ -101,17 +101,17 @@ const placesAllowToClock = [
 ]
 
 // 用 Google geolocate API 取得目前經緯度
-async function getPosition () {
-  try {
-    navigator.geolocation.getCurrentPosition((position) => {
+function getPosition () {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
       currentPosition.lat = position.coords.latitude
       currentPosition.lng = position.coords.longitude
       calculateDistance()
       return updateTimes.value += 1
+    },
+    () => {
+      popErrMsg('請確認是否開啟相機權限!')
     })
-  } catch (err) {
-    return popErrMsg('請重新確認裝置定位功能是否開啟!')
-  }
 }
 
 function calculateDistance () {
@@ -122,7 +122,7 @@ function calculateDistance () {
       return isAllowedToClock.value = true
     }
   }
-  return
+  return popErrMsg('您的定位地點距離可打卡地點超過 400 公尺!')
 }
 
 /*
