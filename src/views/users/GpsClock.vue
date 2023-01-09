@@ -100,7 +100,7 @@ function getPosition () {
       return updateTimes.value += 1
     },
     () => {
-      popErrMsg('請確認是否開啟相機權限!')
+      popErrMsg('請確認是否開啟定位權限!')
     })
 }
 
