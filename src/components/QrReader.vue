@@ -1,23 +1,42 @@
 <template>
+  <h2 v-if="!cameraActive">
+    Loading...
+  </h2>
   <qrcode-stream
+    :camera="cameraActive"
     @init="onInit"
     @decode="onDecode"
   />
+
   <br />
 </template>
 
 
 <script setup>
+import { ref } from 'vue'
 import { QrcodeStream } from "vue-qrcode-reader"
 
-import { popErrMsg } from '../utils/swal'
+import { popErrMsg, popOkMsg } from '../utils/swal'
 
 const emit = defineEmits(['updateQrString'])
+const cameraActive = ref(true)
 
 function onDecode (decodedString) {
+  pauseSacn()
   const reg = /^hr:\/\/(?<string>[-\w]{36})$/
   const { string } = decodedString.match(reg).groups
-  return emit('updateQrString', string)
+  popOkMsg('掃描成功!')
+  emit('updateQrString', string)
+  return setTimeout(() => {
+    startSacn()
+  }, 500)
+}
+
+function pauseSacn () {
+  cameraActive.value = false
+}
+function startSacn () {
+  cameraActive.value = true
 }
 
 async function onInit (promise) {
