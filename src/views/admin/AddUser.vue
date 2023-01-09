@@ -94,7 +94,7 @@ const userData = reactive({
 const isProcessing = ref(false)
 const isNotReadyForSubmit = computed(() => {
   // 如果任一欄位 account、email、password 任一欄位有變動
-  return userData.account && userData.name
+  return userData.account && userData.name && userData.email
     ? false
     : true
 })
