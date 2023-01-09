@@ -59,7 +59,7 @@ async function fetchTodayRecord () {
     }
     return
   } catch (err) {
-    console.log(err)
+    popErrMsg(err)
   }
 }
 

@@ -25,6 +25,10 @@ function onDecode (decodedString) {
   pauseScan()
   const reg = /^hr:\/\/(?<string>[-\w]{36})$/
   const { string } = decodedString.match(reg).groups
+  if (!string) {
+    return popErrMsg('QRcode 解讀失敗，請更新 QRcode 後重新掃描一次!')
+  }
+
   popOkMsg('掃描成功!')
   emit('updateQrString', string)
   return setTimeout(() => {

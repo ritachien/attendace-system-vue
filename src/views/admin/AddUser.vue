@@ -106,13 +106,13 @@ async function handleSubmit () {
     isProcessing.value = true
 
     // 檢查 user Input
-    const accountReg = /^\w{6,12}$/
+    const accountReg = /^\w{5,12}$/
     const emailReg = /^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$/
     const nameReg = /.{1,30}/
 
     if (!accountReg.test(userData.account)) {
       isProcessing.value = false
-      return popErrMsg('帳號須由 6~12 碼英數字組成!')
+      return popErrMsg('帳號須由 5~12 碼英數字組成!')
     }
 
     if (!emailReg.test(userData.email)) {

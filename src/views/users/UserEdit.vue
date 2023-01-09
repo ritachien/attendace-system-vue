@@ -141,7 +141,7 @@ async function handleSubmit () {
 
     if (userData.account && !accountReg.test(userData.account)) {
       isProcessing.value = false
-      return popErrMsg('帳號須由 6~12 碼英數字組成!')
+      return popErrMsg('帳號須由 5~12 碼英數字組成!')
     }
 
     if (userData.email && !emailReg.test(userData.email)) {
