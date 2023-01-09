@@ -1,5 +1,5 @@
 <template>
-  <h2 v-if="!cameraActive">
+  <h2 v-if="cameraActive == 'off'">
     Loading...
   </h2>
   <qrcode-stream
@@ -19,7 +19,7 @@ import { QrcodeStream } from "vue-qrcode-reader"
 import { popErrMsg, popOkMsg } from '../utils/swal'
 
 const emit = defineEmits(['updateQrString'])
-const cameraActive = ref(true)
+const cameraActive = ref('auto')
 
 function onDecode (decodedString) {
   pauseSacn()
@@ -33,10 +33,10 @@ function onDecode (decodedString) {
 }
 
 function pauseSacn () {
-  cameraActive.value = false
+  cameraActive.value = 'off'
 }
 function startSacn () {
-  cameraActive.value = true
+  cameraActive.value = 'auto'
 }
 
 async function onInit (promise) {
