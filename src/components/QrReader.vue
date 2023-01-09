@@ -10,13 +10,14 @@
 <script setup>
 import { QrcodeStream } from "vue-qrcode-reader"
 
-import { popErrMsg } from '../utils/swal'
+import { popErrMsg, popOkMsg } from '../utils/swal'
 
 const emit = defineEmits(['updateQrString'])
 
 function onDecode (decodedString) {
   const reg = /^hr:\/\/(?<string>[-\w]{36})$/
   const { string } = decodedString.match(reg).groups
+  popOkMsg('掃描成功!')
   return emit('updateQrString', string)
 }
 
