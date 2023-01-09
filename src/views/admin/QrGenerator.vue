@@ -32,6 +32,7 @@ async function getQrString () {
 let renewQrCode
 
 onMounted(() => {
+  getQrString()
   renewQrCode = setInterval(() => getQrString(), 1800000) // 30 分鐘
 })
 onBeforeUnmount(() => {
