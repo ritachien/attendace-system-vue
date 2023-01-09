@@ -33,7 +33,7 @@ let renewQrCode
 
 onMounted(() => {
   getQrString()
-  renewQrCode = setInterval(() => getQrString(), 1800000) // 30 分鐘
+  renewQrCode = setInterval(() => getQrString(), 60000) // 1 分鐘
 })
 onBeforeUnmount(() => {
   clearInterval(renewQrCode)
