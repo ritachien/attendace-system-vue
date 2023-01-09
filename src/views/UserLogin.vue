@@ -73,7 +73,7 @@ import { NButton } from 'naive-ui'
 
 import router from '../router'
 import authorizationAPI from '../apis/authorization'
-import { Toast } from '../utils/swal'
+import { popErrMsg, popOkMsg } from '../utils/swal'
 import { useCurrentUserStore } from '../stores/currentUser'
 
 const userStore = useCurrentUserStore()
@@ -86,10 +86,7 @@ const userData = reactive({
 
 const handleSubmit = async () => {
   if (!userData.account || !userData.password) {
-    return Toast.fire({
-      icon: 'warning',
-      title: '請輸入 account 和 password'
-    })
+    return popErrMsg('請輸入 account 和 password')
   }
 
   try {
@@ -107,11 +104,7 @@ const handleSubmit = async () => {
     // 處理 API 請求結果並提示相關訊息
     const { status, message, token, user } = response.data
     if (status === 'success') {
-      Toast.fire({
-        icon: 'success',
-        title: message
-      })
-
+      popOkMsg(message)
 
       // 將 Token 存入 localStorage    
       localStorage.setItem('token', token)
@@ -126,17 +119,10 @@ const handleSubmit = async () => {
     } else {
       isProcessing.value = false
       userData.password = ''
-      Toast.fire({
-        icon: 'warning',
-        title: message
-      })
+      return popErrMsg(message)
     }
   } catch (err) {
-    isProcessing.value = false
-    return Toast.fire({
-      icon: 'warning',
-      title: err
-    })
+    popErrMsg(err)
   }
 }
 </script>

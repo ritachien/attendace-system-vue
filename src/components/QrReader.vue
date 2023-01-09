@@ -22,20 +22,24 @@ const emit = defineEmits(['updateQrString'])
 const cameraActive = ref('auto')
 
 function onDecode (decodedString) {
-  pauseSacn()
+  pauseScan()
   const reg = /^hr:\/\/(?<string>[-\w]{36})$/
   const { string } = decodedString.match(reg).groups
+  if (!string) {
+    return popErrMsg('QRcode 解讀失敗，請更新 QRcode 後重新掃描一次!')
+  }
+
   popOkMsg('掃描成功!')
   emit('updateQrString', string)
   return setTimeout(() => {
-    startSacn()
+    startScan()
   }, 500)
 }
 
-function pauseSacn () {
+function pauseScan () {
   cameraActive.value = 'off'
 }
-function startSacn () {
+function startScan () {
   cameraActive.value = 'auto'
 }
 

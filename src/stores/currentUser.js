@@ -2,6 +2,7 @@ import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
 
 import userAPI from '../apis/users'
+import { popErrMsg } from '../utils/swal'
 
 export const useCurrentUserStore = defineStore('currentUser', () => {
   const isAuthenticated = ref(false)
@@ -36,8 +37,7 @@ export const useCurrentUserStore = defineStore('currentUser', () => {
       const { data: { user } } = await userAPI.getCurrentUser()
       if (user) return setCurrentUser(user)
     } catch (err) {
-      console.error('can not fetch user information')
-      console.log(err)
+      popErrMsg(err)
     }
   }
 
