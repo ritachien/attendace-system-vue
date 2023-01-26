@@ -16,7 +16,7 @@
           :to="qrURL"
         >
           <n-icon>
-            <Qrcode />
+            <BIconQrCode />
           </n-icon>
         </router-link>
 
@@ -26,7 +26,7 @@
           v-if="isNotAdmin"
         >
           <n-icon>
-            <SearchLocation />
+            <BIconGeoAlt />
           </n-icon>
         </router-link>
 
@@ -36,7 +36,7 @@
           v-if="isNotAdmin"
         >
           <n-icon>
-            <user-circle />
+            <BIconPersonCircle />
           </n-icon>
         </router-link>
 
@@ -45,7 +45,7 @@
           @click="logOut()"
         >
           <n-icon>
-            <sign-out-alt />
+            <BIconBoxArrowRight />
           </n-icon>
         </div>
       </div>
@@ -56,13 +56,14 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { NIcon } from 'naive-ui'
-import { UserCircle, SignOutAlt, SearchLocation, Qrcode } from '@vicons/fa'
+import { BIconQrCode, BIconBoxArrowRight, BIconPersonCircle, BIconGeoAlt } from 'bootstrap-icons-vue'
 import { storeToRefs } from 'pinia'
 
 import { useCurrentUserStore } from '../stores/currentUser'
-import router from '../router'
 
+const router = useRouter()
 const userStore = useCurrentUserStore()
 const { isAuthenticated, currentUser } = storeToRefs(userStore)
 const isNotAdmin = computed(() => {
@@ -82,33 +83,30 @@ function logOut () {
 <style scoped>
 header {
   height: 60px;
-  color: #666666;
+  padding: 10px;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
 }
 
 nav {
-  margin: 0 40px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-n-icon {
-  height: 100%;
-}
-
 .icons {
   display: flex;
+  margin-right: 10px;
 }
 
 .nav-icon {
   margin: 10px;
   font-size: 30px;
+  color: #1F6ED4;
 }
 
 .nav-icon:hover {
-  color: cornflowerblue;
+  color: #39BAE8;
   cursor: pointer;
 }
 
@@ -116,6 +114,7 @@ n-icon {
   font-weight: bold;
   letter-spacing: 2px;
   font-size: 30px;
+  color: #1F6ED4;
   text-decoration: none;
 }
 </style>
