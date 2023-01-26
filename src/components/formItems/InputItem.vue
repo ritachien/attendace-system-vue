@@ -22,7 +22,7 @@
 import { ref, computed } from 'vue'
 import { NFormItem, NInput } from 'naive-ui'
 
-import { useValidStatus } from '../../composable/useInputValidation'
+import { useValidationStatus } from '../../composable/useValidationStatus'
 
 const emits = defineEmits(['updateInput'])
 const props = defineProps({
@@ -67,7 +67,7 @@ const input = ref(null)
 const validStatus = computed(() => {
   // passwordCheck 以外 input
   if (props.field !== 'passwordCheck') {
-    return useValidStatus(input.value, props.isValidInput)
+    return useValidationStatus(input.value, props.isValidInput)
   }
 
   // 處理 passwordCheck
