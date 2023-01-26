@@ -1,6 +1,4 @@
 <template>
-  <!-- <n-form-item> -->
-
   <n-checkbox
     :id="props.field"
     v-model:checked="input"
@@ -10,9 +8,8 @@
   >
     {{ props.labelText }}
   </n-checkbox>
-
-  <!-- </n-form-item> -->
 </template>
+
 <script setup>
 import { ref } from 'vue'
 import { NCheckbox } from 'naive-ui'
