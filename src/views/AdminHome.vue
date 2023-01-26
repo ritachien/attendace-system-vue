@@ -2,8 +2,10 @@
   <!-- 選單 -->
   <AdminMenu />
 
-  <!-- 主內容 -->
-  <router-view />
+  <main>
+    <!-- 主內容 -->
+    <router-view />
+  </main>
 </template>
 
 <script setup>
@@ -12,12 +14,8 @@ import AdminMenu from '../components/AdminMenu.vue'
 </script>
 
 <style scoped>
-.admin-main {
-  margin-top: 2vh;
-  height: 85vh;
-}
-
-.main-content {
-  background-color: #f4f0e6;
+main {
+  margin: 0 auto;
+  padding: 10px 20px;
 }
 </style>

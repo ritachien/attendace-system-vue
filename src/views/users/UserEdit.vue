@@ -219,8 +219,7 @@ async function handleSubmit () {
 </script>
 <style scoped>
 main {
-  margin: 10vh auto;
-  min-width: 350px;
+  width: 100%;
   max-width: 600px;
 }
 

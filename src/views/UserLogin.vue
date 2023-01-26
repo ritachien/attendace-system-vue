@@ -149,7 +149,8 @@ async function handleSubmit () {
 
 <style scoped>
 main {
-  margin: 10vh auto;
+  margin: 20px auto;
+  padding: 20px;
   min-width: 350px;
   max-width: 600px;
 }
