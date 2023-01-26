@@ -1,6 +1,4 @@
 <script setup>
-import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import { RouterView } from 'vue-router'
 
 import HeaderNav from './components/HeaderNav.vue';
@@ -8,24 +6,16 @@ import HeaderNav from './components/HeaderNav.vue';
 </script>
 
 <template>
-  <HeaderNav />
+  <HeaderNav class="navbar" />
   <RouterView />
 </template>
 
 <style scoped>
-*,
-*:before,
-*:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
+.navbar {
+  position: sticky;
+  top: 0;
   width: 100vw;
+  background-color: #fae3d9;
+  z-index: 50;
 }
 </style>

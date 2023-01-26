@@ -9,9 +9,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.6",
     "axios": "^1.2.1",
-    "bootstrap": "^5.2.3",
+    "bootstrap-icons-vue": "^1.8.1",
     "dayjs": "^1.11.7",
     "geolocation-utils": "^1.2.5",
     "pinia": "^2.0.28",
