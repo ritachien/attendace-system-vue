@@ -1,92 +1,109 @@
 <template>
-  <div class="container py-5">
-    <form
-      class="w-100"
+  <main>
+    <h1>Login</h1>
+    <n-form
+      :model="userData"
       @submit.prevent.stop="handleSubmit"
     >
-      <div class="text-center my-4">
-        <h1 class="h3 mb-4 font-weight-normal">
-          Login
-        </h1>
-      </div>
 
-      <div class="form-label-group my-4">
-        <label for="account">Account</label>
-        <input
-          id="account"
-          v-model.trim="userData.account"
-          name="account"
-          type="text"
-          class="form-control"
-          placeholder="Enter account here..."
-          required
-          autofocus
-        >
-      </div>
+      <!-- 帳號 -->
+      <InputItem
+        label="Account"
+        field="account"
+        type="text"
+        @updateInput="dataEmit"
+        :value="userData.account"
+        :required="formRequired.account"
+        :isValidInput="isValidAccount"
+        placeholder="Enter your account here..."
+        :key="`account${submitTimes}`"
+      />
 
-      <div class="form-label-group my-4">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          v-model.trim="userData.password"
-          name="password"
-          type="password"
-          class="form-control"
-          placeholder="Enter password here..."
-          autocomplete="current-password"
-          required
-        >
-      </div>
+      <!-- 密碼 -->
+      <InputItem
+        label="Password"
+        field="password"
+        type="password"
+        @updateInput="dataEmit"
+        :value="userData.password"
+        :required="formRequired.password"
+        :isValidInput="isValidPassword"
+        placeholder="Enter your password here..."
+        :key="`password${submitTimes}`"
+      />
 
-      <div class="mb-4 form-check">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          id="isAdmin"
-          v-model="isAdmin"
-        >
-        <label
-          class="form-check-label"
-          for="isAdmin"
-        >Login as Admin</label>
-      </div>
-      <div class="row mt-4 px-2">
-        <n-button
-          strong
-          secondary
-          type="info"
-          class="clock-button"
-          :disabled="isProcessing"
-          @click="handleSubmit"
-          attr-type="submit"
-        >
-          Login
-        </n-button>
-      </div>
-    </form>
-  </div>
+      <!-- admin checkbox -->
+      <CheckBox
+        labelText="Login as Admin"
+        field="isAdmin"
+        :value="userData.isAdmin"
+        @updateInput="dataEmit"
+        class="checkbox-item"
+      />
+
+      <!-- Submit button -->
+      <SubmitButton
+        :disabled="isProcessing"
+        :clickEvent="handleSubmit"
+        :loading="isProcessing"
+        buttonText="Login"
+      />
+
+    </n-form>
+  </main>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { NButton } from 'naive-ui'
+import { ref, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { NForm } from 'naive-ui'
 
-import router from '../router'
+import InputItem from '../components/formItems/InputItem.vue'
+import CheckBox from '../components/formItems/CheckBox.vue'
+import SubmitButton from '../components/formItems/SubmitButton.vue'
+
+import { useInputValidation } from '../composable/useInputValidation'
+
 import authorizationAPI from '../apis/authorization'
 import { popErrMsg, popOkMsg } from '../utils/swal'
 import { useCurrentUserStore } from '../stores/currentUser'
 
+const router = useRouter()
 const userStore = useCurrentUserStore()
-const isAdmin = ref(false)
 const isProcessing = ref(false)
+const submitTimes = ref(0)
 const userData = reactive({
-  account: '',
-  password: '',
+  account: null,
+  password: null,
+  isAdmin: false,
 })
 
-const handleSubmit = async () => {
-  if (!userData.account || !userData.password) {
-    return popErrMsg('請輸入 account 和 password')
+// Input validation
+const formRequired = reactive({
+  account: true,
+  password: true,
+})
+const isValidAccount = computed(() => useInputValidation({
+  field: 'account',
+  data: userData.account,
+  required: formRequired.account,
+}))
+const isValidPassword = computed(() => useInputValidation({
+  field: 'password',
+  data: userData.password,
+  required: formRequired.password,
+}))
+
+// Update emit datas
+function dataEmit ({ field, data }) {
+  if (data === undefined) return
+  return userData[field] = !data ? null : data
+}
+
+// form submit
+async function handleSubmit () {
+  if (!isValidAccount.value || !isValidPassword.value) {
+    return popErrMsg('請輸入正確格式的 account 和 password')
   }
 
   try {
@@ -95,7 +112,7 @@ const handleSubmit = async () => {
 
     // 針對不同身分發出不同 API 請求
     let response
-    if (isAdmin.value) {
+    if (userData.isAdmin) {
       response = await authorizationAPI.adminLogin(userData)
     } else {
       response = await authorizationAPI.userLogin(userData)
@@ -103,33 +120,46 @@ const handleSubmit = async () => {
 
     // 處理 API 請求結果並提示相關訊息
     const { status, message, token, user } = response.data
-    if (status === 'success') {
-      popOkMsg(message)
 
-      // 將 Token 存入 localStorage    
-      localStorage.setItem('token', token)
+    if (status === 'error') throw new Error(message)
 
-      // 更新 pinia store
-      userStore.isAuthenticated = true
-      userStore.setCurrentUser(user)
+    popOkMsg(message)
 
-      // 依登入身分重新導入頁面
-      if (isAdmin.value) return router.push('/admin')
-      return router.push('/user')
-    } else {
-      isProcessing.value = false
-      userData.password = ''
-      return popErrMsg(message)
-    }
+    // 將 Token 存入 localStorage    
+    localStorage.setItem('token', token)
+
+    // 更新 pinia store
+    userStore.isAuthenticated = true
+    userStore.setCurrentUser(user)
+
+    // 依登入身分重新導入頁面
+    if (userData.isAdmin) return router.push('/admin')
+    return router.push('/user')
+
   } catch (err) {
+    userData.password = null
+    submitTimes.value++ // 清空密碼後，重新渲染 passwordInput
     popErrMsg(err)
+  } finally {
+    isProcessing.value = false
   }
 }
+
 </script>
 
 <style scoped>
-form {
-  margin: 0 auto;
+main {
+  margin: 10vh auto;
+  padding: 0 5vw;
+  min-width: 350px;
   max-width: 600px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.checkbox-item {
+  margin-top: 0;
 }
 </style>
