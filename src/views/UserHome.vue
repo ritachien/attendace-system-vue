@@ -11,7 +11,6 @@ import { RouterView } from 'vue-router'
 <style>
 .container {
   margin: 0 auto;
-  padding: 0 5vw;
   max-width: 600px;
 }
 </style>

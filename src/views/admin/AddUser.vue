@@ -197,7 +197,6 @@ function resetForm () {
 <style scoped>
 main {
   margin: 10vh auto;
-  padding: 0 5vw;
   min-width: 350px;
   max-width: 600px;
 }
