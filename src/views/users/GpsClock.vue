@@ -1,6 +1,6 @@
 <template>
-  <!-- 顯示當日打卡紀錄 -->
-  <div class="row mb-5">
+  <main>
+    <!-- 顯示當日打卡紀錄 -->
     <ClockRecord
       :date="date"
       :recordToday="recordToday"
@@ -9,17 +9,14 @@
       :isAllowed="isAllowedToClock"
       :isGpsRoute="true"
     />
-  </div>
 
-  <!-- 顯示當前定位地圖，綁定 key 強制重新渲染畫面 -->
-  <div class="row">
+    <!-- 顯示當前定位地圖，綁定 key 強制重新渲染畫面 -->
     <GoogleMap
       :placesAllowToClock="placesAllowToClock"
       :currentPosition="currentPosition"
       :key="updateTimes"
     />
-  </div>
-
+  </main>
 </template>
 
 <script setup>
@@ -168,3 +165,7 @@ async function updateRecord () {
   }
 }
 </script>
+
+<style scoped>
+
+</style>
