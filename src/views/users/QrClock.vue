@@ -82,7 +82,7 @@ async function addNewRecord () {
     }
     return
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   }
 }
 
@@ -101,7 +101,7 @@ async function updateRecord () {
     }
     return
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   }
 }
 </script>

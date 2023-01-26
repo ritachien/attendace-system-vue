@@ -169,7 +169,7 @@ async function handleSubmit () {
     })
 
   } catch (err) {
-    return popErrMsg(err)
+    return popErrMsg(err.message)
   } finally {
     isProcessing.value = false
   }

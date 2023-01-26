@@ -194,7 +194,7 @@ async function handleSubmit () {
     resetForm()
     popOkMsg('修改成功!')
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   } finally {
     isProcessing.value = false
   }

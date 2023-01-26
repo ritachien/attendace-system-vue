@@ -53,7 +53,7 @@ async function fetchUsers () {
     if (status === 'error') throw new Error(message)
     return userData.value = users
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   }
 }
 
@@ -101,7 +101,7 @@ async function resetPassword (userId) {
     if (status === 'error') throw new Error(message)
     popOkMsg('密碼已重設為 titaner')
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   }
 }
 
@@ -115,7 +115,7 @@ async function unlockAccount (userId) {
     await fetchUsers()
     popOkMsg('帳號已解鎖')
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   }
 }
 

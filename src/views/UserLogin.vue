@@ -139,7 +139,7 @@ async function handleSubmit () {
   } catch (err) {
     userData.password = null
     submitTimes.value++ // 清空密碼後，重新渲染 passwordInput
-    popErrMsg(err)
+    popErrMsg(err.message)
   } finally {
     isProcessing.value = false
   }
