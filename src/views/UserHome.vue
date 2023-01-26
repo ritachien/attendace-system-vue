@@ -1,8 +1,6 @@
 <template>
   <div class="container">
-    <main>
-      <router-view />
-    </main>
+    <router-view />
   </div>
 
 </template>
@@ -11,8 +9,9 @@
 import { RouterView } from 'vue-router'
 </script>
 <style>
-main {
+.container {
   margin: 0 auto;
+  padding: 0 5vw;
   max-width: 600px;
 }
 </style>

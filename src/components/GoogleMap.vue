@@ -4,7 +4,7 @@
     :api-key="API_KEY"
     style="width: 100%; height: 400px"
     :center="currentPosition"
-    :zoom="16"
+    :zoom="15.8"
     :streetViewControl="mapOptions.streetViewControl"
     :fullscreen-control="mapOptions.fullscreenControl"
     :zoomControl="mapOptions.zoomControl"
