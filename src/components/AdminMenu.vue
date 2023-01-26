@@ -24,40 +24,29 @@ const menuOptions = [
       {
         label: () => h(
           RouterLink,
-          {
-            to: {
-              name: 'user-list',
-            }
-          }, {
-          default: () => '員工帳號管理'
-        }),
+          { to: { name: 'user-list' } },
+          { default: () => '員工帳號管理' }
+        ),
         key: 'user-list',
         icon: renderIcon(Users),
-
       },
       {
         label: () => h(
           RouterLink,
-          {
-            to: {
-              name: 'add-user',
-            }
-          }, {
-          default: () => '新增員工帳號'
-        }),
+          { to: { name: 'add-user' } },
+          { default: () => '新增員工帳號' }
+        ),
         key: 'add-user',
         icon: renderIcon(UserPlus),
-      },
-    ]
+      }]
   },
-  {
-    label: "出勤管理",
-    key: "attendance-management",
-    icon: renderIcon(UsersCog),
-    disabled: true,
-    children: [
-    ],
-  },
+  // {
+  //   label: "出勤管理",
+  //   key: "attendance-management",
+  //   icon: renderIcon(UsersCog),
+  //   disabled: true,
+  //   children: [],
+  // },
 ]
 
 function renderIcon (icon) {

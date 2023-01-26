@@ -194,7 +194,7 @@ async function handleSubmit () {
     resetForm()
     popOkMsg('修改成功!')
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   } finally {
     isProcessing.value = false
   }
@@ -220,7 +220,6 @@ async function handleSubmit () {
 <style scoped>
 main {
   margin: 10vh auto;
-  padding: 0 5vw;
   min-width: 350px;
   max-width: 600px;
 }

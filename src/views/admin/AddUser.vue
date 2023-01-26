@@ -156,6 +156,7 @@ async function handleSubmit () {
 
     if (status === 'error') throw new Error(message)
 
+    resetForm()
     return popConfirmMsg({
       icon: 'success',
       msg: '新建成功',
@@ -166,11 +167,28 @@ async function handleSubmit () {
         <h5>email: ${user.email}</h5>
       `
     })
+
   } catch (err) {
-    return popErrMsg(err)
+    return popErrMsg(err.message)
   } finally {
     isProcessing.value = false
   }
+}
+
+// 重設表單
+function resetForm () {
+  // 重設更新內容
+  userData.account = null
+  userData.email = null
+  userData.password = null
+  userData.passwordCheck = null
+  // 重設驗證訊息
+  validationFeedback.account = null
+  validationFeedback.email = null
+  validationFeedback.password = null
+  validationFeedback.passwordCheck = null
+  // 重新渲染
+  return submitTimes.value++
 }
 
 </script>
@@ -179,7 +197,6 @@ async function handleSubmit () {
 <style scoped>
 main {
   margin: 10vh auto;
-  padding: 0 5vw;
   min-width: 350px;
   max-width: 600px;
 }

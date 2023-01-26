@@ -24,7 +24,7 @@ async function getQrString () {
     if (res.data.status === 'error') throw new Error(res.data.message)
     qrValue.value = `hr://${res.data.data}`
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   }
 }
 

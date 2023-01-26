@@ -37,7 +37,7 @@ export const useCurrentUserStore = defineStore('currentUser', () => {
       const { data: { user } } = await userAPI.getCurrentUser()
       if (user) return setCurrentUser(user)
     } catch (err) {
-      popErrMsg(err)
+      popErrMsg(err.message)
     }
   }
 

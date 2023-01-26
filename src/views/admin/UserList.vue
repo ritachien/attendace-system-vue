@@ -1,58 +1,94 @@
 <template>
-  <div class="container text-center">
-    <table class="table table-striped table-hover table-light">
-      <thead>
-        <tr>
-          <th scope="col">No.</th>
-          <th scope="col">姓名</th>
-          <th scope="col">Email</th>
-          <th scope="col">帳號狀態</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(user, index) in userData"
-          :key="user.id"
-        >
-          <th scope="row">{{ index + 1 }}</th>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.errorTimes === 5 ? 'Locked' : 'OK' }}</td>
-          <td>
-            <button
-              @click="unlockAccount(user.id)"
-              class="btn btn-outline-danger mx-1"
-              :disabled="user.errorTimes < 5"
-            >帳號解鎖</button>
-            <button
-              @click="resetPassword(user.id)"
-              class="btn btn-outline-success mx-1"
-            >密碼重設</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <main>
+    <h2>員工帳號清單</h2>
+    <n-space
+      vertical
+      :size="12"
+    >
+      <n-data-table
+        size="small"
+        :columns="columns"
+        :data="users"
+        striped
+      />
+    </n-space>
+
+  </main>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed, h } from 'vue'
+import { NDataTable, NSpace, NButton } from 'naive-ui'
 
 import adminAPI from '../../apis/admin.js'
 import { popErrMsg, popOkMsg } from '../../utils/swal'
 
+const errorTimesToLocked = 5
 const userData = ref([])
+const titles = [
+  { key: 'no', title: 'No.', align: 'center' },
+  { key: 'name', title: '姓名' },
+  { key: 'email', title: 'Email' },
+  { key: 'accountStatus', title: '帳號狀態', align: 'center' },
+]
+
+const columns = createColumns()
+const users = computed(() => {
+  return userData.value.map((user, index) => {
+    return ({
+      no: index + 1,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      accountStatus: user.errorTimes >= errorTimesToLocked ? 'Locked' : 'OK'
+    })
+  })
+})
+
+
 
 async function fetchUsers () {
   try {
-    userData.value = []
     const { data: { status, message, users } } = await adminAPI.getUsers()
     if (status === 'error') throw new Error(message)
-    return userData.value.push(...users)
+    return userData.value = users
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   }
+}
+
+function createColumns () {
+  return [
+    ...titles,
+    {
+      key: 'options',
+      title: '操作選項',
+      align: 'center',
+      render (user) {
+        return [
+          h(NButton, {
+            strong: true,
+            tertiary: true,
+            size: "small",
+            type: 'success',
+            onClick: () => resetPassword(user.id)
+          },
+            { default: () => "重設密碼" }
+          ),
+          h(NButton, {
+            strong: true,
+            tertiary: true,
+            size: "small",
+            type: 'error',
+            disabled: user.accountStatus === 'OK',
+            onClick: () => unlockAccount(user.id)
+          },
+            { default: () => "帳號解鎖" }
+          ),
+        ]
+      },
+    },
+  ]
 }
 
 async function resetPassword (userId) {
@@ -65,7 +101,7 @@ async function resetPassword (userId) {
     if (status === 'error') throw new Error(message)
     popOkMsg('密碼已重設為 titaner')
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   }
 }
 
@@ -75,22 +111,26 @@ async function unlockAccount (userId) {
       userId,
       unlock: true,
     })
-    fetchUsers()
     if (status === 'error') throw new Error(message)
+    await fetchUsers()
     popOkMsg('帳號已解鎖')
   } catch (err) {
-    popErrMsg(err)
+    popErrMsg(err.message)
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   fetchUsers()
 })
 
 </script>
 <style scoped>
-table {
-  max-width: 70vw;
-  vertical-align: middle;
+main {
+  margin: 5vh auto 0;
+  max-width: 700px;
+}
+
+h2 {
+  text-align: center;
 }
 </style>
