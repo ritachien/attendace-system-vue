@@ -1,10 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
-import Login from '../views/UserLogin.vue'
 import UserHome from '../views/UserHome.vue'
 import UserClock from '../views/users/UserClock.vue'
 import GpsClock from '../views/users/GpsClock.vue'
-import QrGenerator from '../views/admin/QrGenerator.vue'
+import AdminQr from '../views/admin/AdminQr.vue'
 
 import { useCurrentUserStore } from '../stores/currentUser'
 import { popErrMsg } from '../utils/swal'
@@ -20,8 +19,8 @@ const router = createRouter({
       children: [
         {
           path: 'qr',
-          name: 'qr-generator',
-          component: QrGenerator,
+          name: 'admin-qr',
+          component: AdminQr,
         },
         {
           path: 'users',
@@ -74,7 +73,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: () => import('../views/UserLogin.vue')
     },
     {
       path: '/',

@@ -1,5 +1,4 @@
 <template>
-  <h3 class="text-center mt-5">點擊 QRcode 可以更新</h3>
   <main>
     <qrcode-vue
       :value="qrValue"
@@ -13,8 +12,8 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import QrcodeVue from 'qrcode.vue'
 
-import adminAPI from '../../apis/admin.js'
-import { popErrMsg } from '../../utils/swal'
+import adminAPI from '../apis/admin'
+import { popErrMsg } from '../utils/swal'
 
 const qrValue = ref('hr://random_string')
 const size = ref(300)
@@ -22,7 +21,7 @@ const size = ref(300)
 async function getQrString () {
   try {
     const res = await adminAPI.getQrString()
-    if (res.data.status === 'error') return popErrMsg(res.data.message)
+    if (res.data.status === 'error') throw new Error(res.data.message)
     qrValue.value = `hr://${res.data.data}`
   } catch (err) {
     popErrMsg(err)
@@ -46,5 +45,9 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+h2 {
+  text-align: center;
 }
 </style>
