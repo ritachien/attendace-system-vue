@@ -88,6 +88,11 @@ const placesAllowToClock = [
     lat: 25.05599234479154,
     lng: 121.5443365400908,
   },
+  {
+    // For testing
+    lat: 25.05066242987015,
+    lng: 121.53600488865158,
+  }
 ]
 
 // 用 Google geolocate API 取得目前經緯度
@@ -131,9 +136,7 @@ function punchClock () {
 async function addNewRecord () {
   try {
     const { data: { records, status, message } } = await usersAPI.postUserRecord({ position: currentPosition })
-    if (status === 'error') {
-      return popErrMsg(message)
-    }
+    if (status === 'error') throw new Error(message)
     if (records) {
       emit('updateClockIn', {
         recordId: records.id,
@@ -152,9 +155,7 @@ async function updateRecord () {
       recordId: props.recordToday.recordId,
       position: currentPosition,
     })
-    if (status === 'error') {
-      return popErrMsg(message)
-    }
+    if (status === 'error') throw new Error(message)
     if (records) {
       emit('updateClockOut', {
         status: records.status,

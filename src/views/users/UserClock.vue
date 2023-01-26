@@ -48,9 +48,7 @@ async function fetchTodayRecord () {
     const { data: { records, status, message } } = await usersAPI.getUserRecord({
       dateQuery: `?date=${date.value}`,
     })
-    if (status === 'error') {
-      return popErrMsg(message)
-    }
+    if (status === 'error') throw new Error(message)
     if (records) {
       recordToday.recordId = records.id
       recordToday.status = records.status

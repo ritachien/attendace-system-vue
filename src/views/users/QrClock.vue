@@ -1,16 +1,14 @@
 <template>
   <!-- 顯示當日打卡紀錄 -->
-  <div class="row mb-5">
-    <ClockRecord
-      :date="date"
-      :recordToday="recordToday"
-      :isGpsRoute="false"
-    />
-  </div>
+  <ClockRecord
+    :date="date"
+    :recordToday="recordToday"
+    :isGpsRoute="false"
+  />
 
-  <div class="row">
-    <QrReader @updateQrString="punchQrClock" />
-  </div>
+  <!-- scanner -->
+  <QrReader @updateQrString="punchQrClock" />
+
 
 </template>
 
@@ -75,9 +73,7 @@ async function addNewRecord () {
     const { data: { records, status, message } } = await usersAPI.postUserRecord({
       qrString: qrString.value,
     })
-    if (status === 'error') {
-      return popErrMsg(message)
-    }
+    if (status === 'error') throw new Error(message)
     if (records) {
       emit('updateClockIn', {
         recordId: records.id,
@@ -96,9 +92,7 @@ async function updateRecord () {
       recordId: props.recordToday.recordId,
       qrString: qrString.value,
     })
-    if (status === 'error') {
-      return popErrMsg(message)
-    }
+    if (status === 'error') throw new Error(message)
     if (records) {
       emit('updateClockOut', {
         status: records.status,

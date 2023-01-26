@@ -48,7 +48,7 @@ async function fetchUsers () {
   try {
     userData.value = []
     const { data: { status, message, users } } = await adminAPI.getUsers()
-    if (status === 'error') return popErrMsg(message)
+    if (status === 'error') throw new Error(message)
     return userData.value.push(...users)
   } catch (err) {
     popErrMsg(err)
@@ -62,7 +62,7 @@ async function resetPassword (userId) {
       resetPassword: true,
     })
     fetchUsers()
-    if (status === 'error') return popErrMsg(message)
+    if (status === 'error') throw new Error(message)
     popOkMsg('密碼已重設為 titaner')
   } catch (err) {
     popErrMsg(err)
@@ -76,7 +76,7 @@ async function unlockAccount (userId) {
       unlock: true,
     })
     fetchUsers()
-    if (status === 'error') return popErrMsg(message)
+    if (status === 'error') throw new Error(message)
     popOkMsg('帳號已解鎖')
   } catch (err) {
     popErrMsg(err)
